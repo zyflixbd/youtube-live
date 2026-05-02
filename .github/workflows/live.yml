@@ -1,0 +1,44 @@
+name: YouTube Auto Live Stream
+
+on:
+  workflow_dispatch:  # Manual start button
+  schedule:
+    - cron: '0 */5 * * *'  # প্রতি 5 ঘণ্টায় auto restart
+
+jobs:
+  stream:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350  # 5 ঘণ্টা 50 মিনিট চলবে
+
+    steps:
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ffmpeg
+
+      - name: Download Video from Google Drive
+        run: |
+          pip install gdown
+          gdown "${{ secrets.VIDEO_URL }}" -O video.mp4
+          echo "Video downloaded successfully!"
+          ls -lh video.mp4
+
+      - name: Start YouTube Live Stream
+        run: |
+          echo "Starting YouTube Live Stream..."
+          ffmpeg \
+            -re \
+            -stream_loop -1 \
+            -i video.mp4 \
+            -c:v libx264 \
+            -preset veryfast \
+            -b:v 2500k \
+            -maxrate 2500k \
+            -bufsize 5000k \
+            -pix_fmt yuv420p \
+            -g 50 \
+            -c:a aac \
+            -b:a 128k \
+            -ar 44100 \
+            -f flv \
+            "rtmp://a.rtmp.youtube.com/live2/${{ secrets.STREAM_KEY }}"
