@@ -2,9 +2,6 @@ name: YouTube Auto Live Stream
 
 on:
   workflow_dispatch:  # Manual start button
-  schedule:
-    - cron: '0 */5 * * *'  # প্রতি 5 ঘণ্টায় auto restart
-
 jobs:
   stream:
     runs-on: ubuntu-latest
