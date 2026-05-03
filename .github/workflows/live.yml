@@ -19,7 +19,7 @@ jobs:
       - name: Download Video from Google Drive
         run: |
           pip install gdown
-          gdown "${{ secrets.VIDEO_URL }}" -O video.mp4
+          gdown "https://drive.google.com/uc?id=${{ secrets.VIDEO_URL }}" -O video.mp4
           echo "Video downloaded successfully!"
           ls -lh video.mp4
 
