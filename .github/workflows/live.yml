@@ -2,6 +2,7 @@ name: YouTube Auto Live Stream
 
 on:
   workflow_dispatch:  # Manual start button
+
 jobs:
   stream:
     runs-on: ubuntu-latest
@@ -28,7 +29,7 @@ jobs:
             -stream_loop -1 \
             -i video.mp4 \
             -c:v libx264 \
-            -preset veryfast \
+            -preset ultrafast \
             -b:v 1500k \
             -maxrate 1500k \
             -bufsize 3000k \
